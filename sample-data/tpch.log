@@ -1,0 +1,1750 @@
+2021-03-02 12:09:19.318 UTC [465672] LOG:  database system was shut down at 2021-03-02 12:09:19 UTC
+2021-03-02 12:09:19.324 UTC [465669] LOG:  database system is ready to accept connections
+2021-03-02 12:09:38.574 UTC [465684] LOG:  duration: 0.139 ms
+2021-03-02 12:09:38.574 UTC [465684] LOG:  duration: 0.079 ms
+2021-03-02 12:09:38.574 UTC [465684] LOG:  duration: 0.047 ms
+2021-03-02 12:09:38.574 UTC [465684] LOG:  duration: 0.046 ms
+2021-03-02 12:09:38.575 UTC [465684] LOG:  duration: 0.076 ms
+2021-03-02 12:09:38.575 UTC [465684] LOG:  duration: 0.054 ms
+2021-03-02 12:09:38.575 UTC [465684] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Minimum Cost Supplier Query (Q2)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_acctbal,
+		s_name,
+		n_name,
+		p_partkey,
+		p_mfgr,
+		s_address,
+		s_phone,
+		s_comment
+	from
+		part,
+		supplier,
+		partsupp,
+		nation,
+		region
+	where
+		p_partkey = ps_partkey
+		and s_suppkey = ps_suppkey
+		and p_size = 45
+		and p_type like '%STEEL'
+		and s_nationkey = n_nationkey
+		and n_regionkey = r_regionkey
+		and r_name = 'MIDDLE EAST'
+		and ps_supplycost = (
+			select
+				min(ps_supplycost)
+			from
+				partsupp,
+				supplier,
+				nation,
+				region
+			where
+				p_partkey = ps_partkey
+				and s_suppkey = ps_suppkey
+				and s_nationkey = n_nationkey
+				and n_regionkey = r_regionkey
+				and r_name = 'MIDDLE EAST'
+		)
+	order by
+		s_acctbal desc,
+		n_name,
+		s_name,
+		p_partkey
+	limit 100;
+	
+2021-03-02 12:09:38.588 UTC [465684] LOG:  Bao planning selected arm 0, in 10.303000 CPU ms.
+2021-03-02 12:09:38.588 UTC [465684] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Minimum Cost Supplier Query (Q2)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_acctbal,
+		s_name,
+		n_name,
+		p_partkey,
+		p_mfgr,
+		s_address,
+		s_phone,
+		s_comment
+	from
+		part,
+		supplier,
+		partsupp,
+		nation,
+		region
+	where
+		p_partkey = ps_partkey
+		and s_suppkey = ps_suppkey
+		and p_size = 45
+		and p_type like '%STEEL'
+		and s_nationkey = n_nationkey
+		and n_regionkey = r_regionkey
+		and r_name = 'MIDDLE EAST'
+		and ps_supplycost = (
+			select
+				min(ps_supplycost)
+			from
+				partsupp,
+				supplier,
+				nation,
+				region
+			where
+				p_partkey = ps_partkey
+				and s_suppkey = ps_suppkey
+				and s_nationkey = n_nationkey
+				and n_regionkey = r_regionkey
+				and r_name = 'MIDDLE EAST'
+		)
+	order by
+		s_acctbal desc,
+		n_name,
+		s_name,
+		p_partkey
+	limit 100;
+	
+2021-03-02 12:11:19.186 UTC [465684] LOG:  duration: 100611.219 ms
+2021-03-02 12:11:19.192 UTC [465699] LOG:  duration: 0.081 ms
+2021-03-02 12:11:19.192 UTC [465699] LOG:  duration: 0.056 ms
+2021-03-02 12:11:19.192 UTC [465699] LOG:  duration: 0.026 ms
+2021-03-02 12:11:19.192 UTC [465699] LOG:  duration: 0.024 ms
+2021-03-02 12:11:19.193 UTC [465699] LOG:  duration: 0.046 ms
+2021-03-02 12:11:19.193 UTC [465699] LOG:  duration: 0.035 ms
+2021-03-02 12:11:19.193 UTC [465699] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Returned Item Reporting Query (Q10)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		c_custkey,
+		c_name,
+		sum(l_extendedprice * (1 - l_discount)) as revenue,
+		c_acctbal,
+		n_name,
+		c_address,
+		c_phone,
+		c_comment
+	from
+		customer,
+		orders,
+		lineitem,
+		nation
+	where
+		c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and o_orderdate >= date '1993-10-01'
+		and o_orderdate < date '1993-10-01' + interval '3' month
+		and l_returnflag = 'R'
+		and c_nationkey = n_nationkey
+	group by
+		c_custkey,
+		c_name,
+		c_acctbal,
+		c_phone,
+		n_name,
+		c_address,
+		c_comment
+	order by
+		revenue desc
+	limit 20;
+	
+2021-03-02 12:11:19.208 UTC [465699] LOG:  Bao planning selected arm 0, in 12.679000 CPU ms.
+2021-03-02 12:11:19.208 UTC [465699] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Returned Item Reporting Query (Q10)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		c_custkey,
+		c_name,
+		sum(l_extendedprice * (1 - l_discount)) as revenue,
+		c_acctbal,
+		n_name,
+		c_address,
+		c_phone,
+		c_comment
+	from
+		customer,
+		orders,
+		lineitem,
+		nation
+	where
+		c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and o_orderdate >= date '1993-10-01'
+		and o_orderdate < date '1993-10-01' + interval '3' month
+		and l_returnflag = 'R'
+		and c_nationkey = n_nationkey
+	group by
+		c_custkey,
+		c_name,
+		c_acctbal,
+		c_phone,
+		n_name,
+		c_address,
+		c_comment
+	order by
+		revenue desc
+	limit 20;
+	
+2021-03-02 12:11:20.669 UTC [465699] LOG:  duration: 1476.618 ms
+2021-03-02 12:11:20.675 UTC [465703] LOG:  duration: 0.089 ms
+2021-03-02 12:11:20.675 UTC [465703] LOG:  duration: 0.065 ms
+2021-03-02 12:11:20.675 UTC [465703] LOG:  duration: 0.023 ms
+2021-03-02 12:11:20.675 UTC [465703] LOG:  duration: 0.021 ms
+2021-03-02 12:11:20.675 UTC [465703] LOG:  duration: 0.042 ms
+2021-03-02 12:11:20.676 UTC [465703] LOG:  duration: 0.030 ms
+2021-03-02 12:11:20.676 UTC [465703] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Parts/Supplier Relationship Query (Q16)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		p_brand,
+		p_type,
+		p_size,
+		count(distinct ps_suppkey) as supplier_cnt
+	from
+		partsupp,
+		part
+	where
+		p_partkey = ps_partkey
+		and p_brand <> 'Brand#54'
+		and p_type not like 'PROMO BRUSHED%'
+		and p_size in (46, 7, 24, 15, 39, 18, 45, 34)
+		and ps_suppkey not in (
+			select
+				s_suppkey
+			from
+				supplier
+			where
+				s_comment like '%Customer%Complaints%'
+		)
+	group by
+		p_brand,
+		p_type,
+		p_size
+	order by
+		supplier_cnt desc,
+		p_brand,
+		p_type,
+		p_size
+	;
+	
+2021-03-02 12:11:20.708 UTC [465703] LOG:  Bao planning selected arm 0, in 31.106000 CPU ms.
+2021-03-02 12:11:20.708 UTC [465703] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Parts/Supplier Relationship Query (Q16)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		p_brand,
+		p_type,
+		p_size,
+		count(distinct ps_suppkey) as supplier_cnt
+	from
+		partsupp,
+		part
+	where
+		p_partkey = ps_partkey
+		and p_brand <> 'Brand#54'
+		and p_type not like 'PROMO BRUSHED%'
+		and p_size in (46, 7, 24, 15, 39, 18, 45, 34)
+		and ps_suppkey not in (
+			select
+				s_suppkey
+			from
+				supplier
+			where
+				s_comment like '%Customer%Complaints%'
+		)
+	group by
+		p_brand,
+		p_type,
+		p_size
+	order by
+		supplier_cnt desc,
+		p_brand,
+		p_type,
+		p_size
+	;
+	
+2021-03-02 12:11:21.257 UTC [465703] LOG:  duration: 581.074 ms
+2021-03-02 12:11:21.272 UTC [465706] LOG:  duration: 0.111 ms
+2021-03-02 12:11:21.272 UTC [465706] LOG:  duration: 0.077 ms
+2021-03-02 12:11:21.273 UTC [465706] LOG:  duration: 0.037 ms
+2021-03-02 12:11:21.273 UTC [465706] LOG:  duration: 0.034 ms
+2021-03-02 12:11:21.273 UTC [465706] LOG:  duration: 0.061 ms
+2021-03-02 12:11:21.273 UTC [465706] LOG:  duration: 0.048 ms
+2021-03-02 12:11:21.273 UTC [465706] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Promotion Effect Query (Q14)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		100.00 * sum(case
+			when p_type like 'PROMO%'
+				then l_extendedprice * (1 - l_discount)
+			else 0
+		end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+	from
+		lineitem,
+		part
+	where
+		l_partkey = p_partkey
+		and l_shipdate >= date '1993-12-01'
+		and l_shipdate < date '1993-12-01' + interval '1' month
+	;
+	
+2021-03-02 12:11:21.305 UTC [465706] LOG:  Bao planning selected arm 0, in 30.361000 CPU ms.
+2021-03-02 12:11:21.305 UTC [465706] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Promotion Effect Query (Q14)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		100.00 * sum(case
+			when p_type like 'PROMO%'
+				then l_extendedprice * (1 - l_discount)
+			else 0
+		end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+	from
+		lineitem,
+		part
+	where
+		l_partkey = p_partkey
+		and l_shipdate >= date '1993-12-01'
+		and l_shipdate < date '1993-12-01' + interval '1' month
+	;
+	
+2021-03-02 12:11:21.907 UTC [465706] LOG:  duration: 633.634 ms
+2021-03-02 12:11:21.912 UTC [465709] LOG:  duration: 0.074 ms
+2021-03-02 12:11:21.912 UTC [465709] LOG:  duration: 0.051 ms
+2021-03-02 12:11:21.912 UTC [465709] LOG:  duration: 0.022 ms
+2021-03-02 12:11:21.912 UTC [465709] LOG:  duration: 0.020 ms
+2021-03-02 12:11:21.913 UTC [465709] LOG:  duration: 0.041 ms
+2021-03-02 12:11:21.913 UTC [465709] LOG:  duration: 0.031 ms
+2021-03-02 12:11:21.913 UTC [465709] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Order Priority Checking Query (Q4)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		o_orderpriority,
+		count(*) as order_count
+	from
+		orders
+	where
+		o_orderdate >= date '1997-05-01'
+		and o_orderdate < date '1997-05-01' + interval '3' month
+		and exists (
+			select
+				*
+			from
+				lineitem
+			where
+				l_orderkey = o_orderkey
+				and l_commitdate < l_receiptdate
+		)
+	group by
+		o_orderpriority
+	order by
+		o_orderpriority
+	;
+	
+2021-03-02 12:11:21.942 UTC [465709] LOG:  Bao planning selected arm 0, in 28.029000 CPU ms.
+2021-03-02 12:11:21.942 UTC [465709] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Order Priority Checking Query (Q4)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		o_orderpriority,
+		count(*) as order_count
+	from
+		orders
+	where
+		o_orderdate >= date '1997-05-01'
+		and o_orderdate < date '1997-05-01' + interval '3' month
+		and exists (
+			select
+				*
+			from
+				lineitem
+			where
+				l_orderkey = o_orderkey
+				and l_commitdate < l_receiptdate
+		)
+	group by
+		o_orderpriority
+	order by
+		o_orderpriority
+	;
+	
+2021-03-02 12:11:23.013 UTC [465709] LOG:  duration: 1099.925 ms
+2021-03-02 12:11:23.018 UTC [465712] LOG:  duration: 0.107 ms
+2021-03-02 12:11:23.018 UTC [465712] LOG:  duration: 0.064 ms
+2021-03-02 12:11:23.018 UTC [465712] LOG:  duration: 0.026 ms
+2021-03-02 12:11:23.019 UTC [465712] LOG:  duration: 0.025 ms
+2021-03-02 12:11:23.019 UTC [465712] LOG:  duration: 0.045 ms
+2021-03-02 12:11:23.019 UTC [465712] LOG:  duration: 0.035 ms
+2021-03-02 12:11:23.019 UTC [465712] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Minimum Cost Supplier Query (Q2)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_acctbal,
+		s_name,
+		n_name,
+		p_partkey,
+		p_mfgr,
+		s_address,
+		s_phone,
+		s_comment
+	from
+		part,
+		supplier,
+		partsupp,
+		nation,
+		region
+	where
+		p_partkey = ps_partkey
+		and s_suppkey = ps_suppkey
+		and p_size = 45
+		and p_type like '%STEEL'
+		and s_nationkey = n_nationkey
+		and n_regionkey = r_regionkey
+		and r_name = 'MIDDLE EAST'
+		and ps_supplycost = (
+			select
+				min(ps_supplycost)
+			from
+				partsupp,
+				supplier,
+				nation,
+				region
+			where
+				p_partkey = ps_partkey
+				and s_suppkey = ps_suppkey
+				and s_nationkey = n_nationkey
+				and n_regionkey = r_regionkey
+				and r_name = 'MIDDLE EAST'
+		)
+	order by
+		s_acctbal desc,
+		n_name,
+		s_name,
+		p_partkey
+	limit 100;
+	
+2021-03-02 12:11:23.050 UTC [465712] LOG:  Bao planning selected arm 0, in 29.410000 CPU ms.
+2021-03-02 12:11:23.050 UTC [465712] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Minimum Cost Supplier Query (Q2)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_acctbal,
+		s_name,
+		n_name,
+		p_partkey,
+		p_mfgr,
+		s_address,
+		s_phone,
+		s_comment
+	from
+		part,
+		supplier,
+		partsupp,
+		nation,
+		region
+	where
+		p_partkey = ps_partkey
+		and s_suppkey = ps_suppkey
+		and p_size = 45
+		and p_type like '%STEEL'
+		and s_nationkey = n_nationkey
+		and n_regionkey = r_regionkey
+		and r_name = 'MIDDLE EAST'
+		and ps_supplycost = (
+			select
+				min(ps_supplycost)
+			from
+				partsupp,
+				supplier,
+				nation,
+				region
+			where
+				p_partkey = ps_partkey
+				and s_suppkey = ps_suppkey
+				and s_nationkey = n_nationkey
+				and n_regionkey = r_regionkey
+				and r_name = 'MIDDLE EAST'
+		)
+	order by
+		s_acctbal desc,
+		n_name,
+		s_name,
+		p_partkey
+	limit 100;
+	
+2021-03-02 12:12:55.382 UTC [465712] LOG:  duration: 92362.697 ms
+2021-03-02 12:12:55.387 UTC [465725] LOG:  duration: 0.069 ms
+2021-03-02 12:12:55.387 UTC [465725] LOG:  duration: 0.042 ms
+2021-03-02 12:12:55.387 UTC [465725] LOG:  duration: 0.021 ms
+2021-03-02 12:12:55.387 UTC [465725] LOG:  duration: 0.021 ms
+2021-03-02 12:12:55.387 UTC [465725] LOG:  duration: 0.034 ms
+2021-03-02 12:12:55.387 UTC [465725] LOG:  duration: 0.032 ms
+2021-03-02 12:12:55.387 UTC [465725] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Volume Shipping Query (Q7)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		supp_nation,
+		cust_nation,
+		l_year,
+		sum(volume) as revenue
+	from
+		(
+			select
+				n1.n_name as supp_nation,
+				n2.n_name as cust_nation,
+				extract(year from l_shipdate) as l_year,
+				l_extendedprice * (1 - l_discount) as volume
+			from
+				supplier,
+				lineitem,
+				orders,
+				customer,
+				nation n1,
+				nation n2
+			where
+				s_suppkey = l_suppkey
+				and o_orderkey = l_orderkey
+				and c_custkey = o_custkey
+				and s_nationkey = n1.n_nationkey
+				and c_nationkey = n2.n_nationkey
+				and (
+					(n1.n_name = 'IRAQ' and n2.n_name = 'ARGENTINA')
+					or (n1.n_name = 'ARGENTINA' and n2.n_name = 'IRAQ')
+				)
+				and l_shipdate between date '1995-01-01' and date '1996-12-31'
+		) as shipping
+	group by
+		supp_nation,
+		cust_nation,
+		l_year
+	order by
+		supp_nation,
+		cust_nation,
+		l_year
+	;
+	
+2021-03-02 12:12:56.145 UTC [465725] LOG:  duration: 758.096 ms
+2021-03-02 12:12:56.149 UTC [465728] LOG:  duration: 0.087 ms
+2021-03-02 12:12:56.150 UTC [465728] LOG:  duration: 0.060 ms
+2021-03-02 12:12:56.150 UTC [465728] LOG:  duration: 0.028 ms
+2021-03-02 12:12:56.150 UTC [465728] LOG:  duration: 0.024 ms
+2021-03-02 12:12:56.150 UTC [465728] LOG:  duration: 0.043 ms
+2021-03-02 12:12:56.151 UTC [465728] LOG:  duration: 0.033 ms
+2021-03-02 12:12:56.151 UTC [465728] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Important Stock Identification Query (Q11)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		ps_partkey,
+		sum(ps_supplycost * ps_availqty) as value
+	from
+		partsupp,
+		supplier,
+		nation
+	where
+		ps_suppkey = s_suppkey
+		and s_nationkey = n_nationkey
+		and n_name = 'ROMANIA'
+	group by
+		ps_partkey having
+			sum(ps_supplycost * ps_availqty) > (
+				select
+					sum(ps_supplycost * ps_availqty) * 0.0001000000
+				from
+					partsupp,
+					supplier,
+					nation
+				where
+					ps_suppkey = s_suppkey
+					and s_nationkey = n_nationkey
+					and n_name = 'ROMANIA'
+			)
+	order by
+		value desc
+	;
+	
+2021-03-02 12:12:56.180 UTC [465728] LOG:  Bao planning selected arm 0, in 27.637000 CPU ms.
+2021-03-02 12:12:56.180 UTC [465728] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Important Stock Identification Query (Q11)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		ps_partkey,
+		sum(ps_supplycost * ps_availqty) as value
+	from
+		partsupp,
+		supplier,
+		nation
+	where
+		ps_suppkey = s_suppkey
+		and s_nationkey = n_nationkey
+		and n_name = 'ROMANIA'
+	group by
+		ps_partkey having
+			sum(ps_supplycost * ps_availqty) > (
+				select
+					sum(ps_supplycost * ps_availqty) * 0.0001000000
+				from
+					partsupp,
+					supplier,
+					nation
+				where
+					ps_suppkey = s_suppkey
+					and s_nationkey = n_nationkey
+					and n_name = 'ROMANIA'
+			)
+	order by
+		value desc
+	;
+	
+2021-03-02 12:12:56.326 UTC [465728] LOG:  duration: 174.862 ms
+2021-03-02 12:12:56.332 UTC [465733] LOG:  duration: 0.080 ms
+2021-03-02 12:12:56.333 UTC [465733] LOG:  duration: 0.091 ms
+2021-03-02 12:12:56.333 UTC [465733] LOG:  duration: 0.022 ms
+2021-03-02 12:12:56.333 UTC [465733] LOG:  duration: 0.021 ms
+2021-03-02 12:12:56.333 UTC [465733] LOG:  duration: 0.040 ms
+2021-03-02 12:12:56.333 UTC [465733] LOG:  duration: 0.030 ms
+2021-03-02 12:12:56.333 UTC [465733] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Discounted Revenue Query (Q19)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		sum(l_extendedprice* (1 - l_discount)) as revenue
+	from
+		lineitem,
+		part
+	where
+		(
+			p_partkey = l_partkey
+			and p_brand = 'Brand#51'
+			and p_container in ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
+			and l_quantity >= 9 and l_quantity <= 9 + 10
+			and p_size between 1 and 5
+			and l_shipmode in ('AIR', 'AIR REG')
+			and l_shipinstruct = 'DELIVER IN PERSON'
+		)
+		or
+		(
+			p_partkey = l_partkey
+			and p_brand = 'Brand#32'
+			and p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+			and l_quantity >= 16 and l_quantity <= 16 + 10
+			and p_size between 1 and 10
+			and l_shipmode in ('AIR', 'AIR REG')
+			and l_shipinstruct = 'DELIVER IN PERSON'
+		)
+		or
+		(
+			p_partkey = l_partkey
+			and p_brand = 'Brand#42'
+			and p_container in ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+			and l_quantity >= 29 and l_quantity <= 29 + 10
+			and p_size between 1 and 15
+			and l_shipmode in ('AIR', 'AIR REG')
+			and l_shipinstruct = 'DELIVER IN PERSON'
+		)
+	;
+	
+2021-03-02 12:12:56.363 UTC [465733] LOG:  Bao planning selected arm 0, in 28.200000 CPU ms.
+2021-03-02 12:12:56.363 UTC [465733] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Discounted Revenue Query (Q19)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		sum(l_extendedprice* (1 - l_discount)) as revenue
+	from
+		lineitem,
+		part
+	where
+		(
+			p_partkey = l_partkey
+			and p_brand = 'Brand#51'
+			and p_container in ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG')
+			and l_quantity >= 9 and l_quantity <= 9 + 10
+			and p_size between 1 and 5
+			and l_shipmode in ('AIR', 'AIR REG')
+			and l_shipinstruct = 'DELIVER IN PERSON'
+		)
+		or
+		(
+			p_partkey = l_partkey
+			and p_brand = 'Brand#32'
+			and p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+			and l_quantity >= 16 and l_quantity <= 16 + 10
+			and p_size between 1 and 10
+			and l_shipmode in ('AIR', 'AIR REG')
+			and l_shipinstruct = 'DELIVER IN PERSON'
+		)
+		or
+		(
+			p_partkey = l_partkey
+			and p_brand = 'Brand#42'
+			and p_container in ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+			and l_quantity >= 29 and l_quantity <= 29 + 10
+			and p_size between 1 and 15
+			and l_shipmode in ('AIR', 'AIR REG')
+			and l_shipinstruct = 'DELIVER IN PERSON'
+		)
+	;
+	
+2021-03-02 12:12:57.068 UTC [465733] LOG:  duration: 734.511 ms
+2021-03-02 12:12:57.073 UTC [465736] LOG:  duration: 0.086 ms
+2021-03-02 12:12:57.073 UTC [465736] LOG:  duration: 0.074 ms
+2021-03-02 12:12:57.073 UTC [465736] LOG:  duration: 0.028 ms
+2021-03-02 12:12:57.073 UTC [465736] LOG:  duration: 0.025 ms
+2021-03-02 12:12:57.073 UTC [465736] LOG:  duration: 0.048 ms
+2021-03-02 12:12:57.073 UTC [465736] LOG:  duration: 0.036 ms
+2021-03-02 12:12:57.074 UTC [465736] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Returned Item Reporting Query (Q10)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		c_custkey,
+		c_name,
+		sum(l_extendedprice * (1 - l_discount)) as revenue,
+		c_acctbal,
+		n_name,
+		c_address,
+		c_phone,
+		c_comment
+	from
+		customer,
+		orders,
+		lineitem,
+		nation
+	where
+		c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and o_orderdate >= date '1993-10-01'
+		and o_orderdate < date '1993-10-01' + interval '3' month
+		and l_returnflag = 'R'
+		and c_nationkey = n_nationkey
+	group by
+		c_custkey,
+		c_name,
+		c_acctbal,
+		c_phone,
+		n_name,
+		c_address,
+		c_comment
+	order by
+		revenue desc
+	limit 20;
+	
+2021-03-02 12:12:57.107 UTC [465736] LOG:  Bao planning selected arm 0, in 31.779000 CPU ms.
+2021-03-02 12:12:57.107 UTC [465736] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Returned Item Reporting Query (Q10)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		c_custkey,
+		c_name,
+		sum(l_extendedprice * (1 - l_discount)) as revenue,
+		c_acctbal,
+		n_name,
+		c_address,
+		c_phone,
+		c_comment
+	from
+		customer,
+		orders,
+		lineitem,
+		nation
+	where
+		c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and o_orderdate >= date '1993-10-01'
+		and o_orderdate < date '1993-10-01' + interval '3' month
+		and l_returnflag = 'R'
+		and c_nationkey = n_nationkey
+	group by
+		c_custkey,
+		c_name,
+		c_acctbal,
+		c_phone,
+		n_name,
+		c_address,
+		c_comment
+	order by
+		revenue desc
+	limit 20;
+	
+2021-03-02 12:12:58.006 UTC [465736] LOG:  duration: 932.676 ms
+2021-03-02 12:12:58.011 UTC [465739] LOG:  duration: 0.087 ms
+2021-03-02 12:12:58.011 UTC [465739] LOG:  duration: 0.054 ms
+2021-03-02 12:12:58.012 UTC [465739] LOG:  duration: 0.072 ms
+2021-03-02 12:12:58.012 UTC [465739] LOG:  duration: 0.029 ms
+2021-03-02 12:12:58.012 UTC [465739] LOG:  duration: 0.049 ms
+2021-03-02 12:12:58.012 UTC [465739] LOG:  duration: 0.042 ms
+2021-03-02 12:12:58.012 UTC [465739] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Promotion Effect Query (Q14)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		100.00 * sum(case
+			when p_type like 'PROMO%'
+				then l_extendedprice * (1 - l_discount)
+			else 0
+		end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+	from
+		lineitem,
+		part
+	where
+		l_partkey = p_partkey
+		and l_shipdate >= date '1993-12-01'
+		and l_shipdate < date '1993-12-01' + interval '1' month
+	;
+	
+2021-03-02 12:12:58.042 UTC [465739] LOG:  Bao planning selected arm 0, in 28.604000 CPU ms.
+2021-03-02 12:12:58.042 UTC [465739] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Promotion Effect Query (Q14)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		100.00 * sum(case
+			when p_type like 'PROMO%'
+				then l_extendedprice * (1 - l_discount)
+			else 0
+		end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+	from
+		lineitem,
+		part
+	where
+		l_partkey = p_partkey
+		and l_shipdate >= date '1993-12-01'
+		and l_shipdate < date '1993-12-01' + interval '1' month
+	;
+	
+2021-03-02 12:12:58.560 UTC [465739] LOG:  duration: 548.258 ms
+2021-03-02 12:12:58.565 UTC [465742] LOG:  duration: 0.082 ms
+2021-03-02 12:12:58.565 UTC [465742] LOG:  duration: 0.068 ms
+2021-03-02 12:12:58.566 UTC [465742] LOG:  duration: 0.025 ms
+2021-03-02 12:12:58.566 UTC [465742] LOG:  duration: 0.023 ms
+2021-03-02 12:12:58.566 UTC [465742] LOG:  duration: 0.048 ms
+2021-03-02 12:12:58.566 UTC [465742] LOG:  duration: 0.063 ms
+2021-03-02 12:12:58.566 UTC [465742] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Potential Part Promotion Query (Q20)
+	-- Function Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_name,
+		s_address
+	from
+		supplier,
+		nation
+	where
+		s_suppkey in (
+			select
+				ps_suppkey
+			from
+				partsupp
+			where
+				ps_partkey in (
+					select
+						p_partkey
+					from
+						part
+					where
+						p_name like 'brown%'
+				)
+				and ps_availqty > (
+					select
+						0.5 * sum(l_quantity)
+					from
+						lineitem
+					where
+						l_partkey = ps_partkey
+						and l_suppkey = ps_suppkey
+						and l_shipdate >= date '1995-01-01'
+						and l_shipdate < date '1995-01-01' + interval '1' year
+				)
+		)
+		and s_nationkey = n_nationkey
+		and n_name = 'ETHIOPIA'
+	order by
+		s_name
+	;
+	
+2021-03-02 12:12:58.598 UTC [465742] LOG:  Bao planning selected arm 0, in 29.647000 CPU ms.
+2021-03-02 12:12:58.598 UTC [465742] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Potential Part Promotion Query (Q20)
+	-- Function Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_name,
+		s_address
+	from
+		supplier,
+		nation
+	where
+		s_suppkey in (
+			select
+				ps_suppkey
+			from
+				partsupp
+			where
+				ps_partkey in (
+					select
+						p_partkey
+					from
+						part
+					where
+						p_name like 'brown%'
+				)
+				and ps_availqty > (
+					select
+						0.5 * sum(l_quantity)
+					from
+						lineitem
+					where
+						l_partkey = ps_partkey
+						and l_suppkey = ps_suppkey
+						and l_shipdate >= date '1995-01-01'
+						and l_shipdate < date '1995-01-01' + interval '1' year
+				)
+		)
+		and s_nationkey = n_nationkey
+		and n_name = 'ETHIOPIA'
+	order by
+		s_name
+	;
+	
+2021-03-02 12:17:58.567 UTC [465742] ERROR:  canceling statement due to statement timeout
+2021-03-02 12:17:58.567 UTC [465742] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Potential Part Promotion Query (Q20)
+	-- Function Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_name,
+		s_address
+	from
+		supplier,
+		nation
+	where
+		s_suppkey in (
+			select
+				ps_suppkey
+			from
+				partsupp
+			where
+				ps_partkey in (
+					select
+						p_partkey
+					from
+						part
+					where
+						p_name like 'brown%'
+				)
+				and ps_availqty > (
+					select
+						0.5 * sum(l_quantity)
+					from
+						lineitem
+					where
+						l_partkey = ps_partkey
+						and l_suppkey = ps_suppkey
+						and l_shipdate >= date '1995-01-01'
+						and l_shipdate < date '1995-01-01' + interval '1' year
+				)
+		)
+		and s_nationkey = n_nationkey
+		and n_name = 'ETHIOPIA'
+	order by
+		s_name
+	;
+	
+2021-03-02 12:17:59.575 UTC [465774] LOG:  duration: 0.089 ms
+2021-03-02 12:17:59.575 UTC [465774] LOG:  duration: 0.059 ms
+2021-03-02 12:17:59.575 UTC [465774] LOG:  duration: 0.027 ms
+2021-03-02 12:17:59.576 UTC [465774] LOG:  duration: 0.024 ms
+2021-03-02 12:17:59.576 UTC [465774] LOG:  duration: 0.047 ms
+2021-03-02 12:17:59.576 UTC [465774] LOG:  duration: 0.035 ms
+2021-03-02 12:17:59.576 UTC [465774] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Returned Item Reporting Query (Q10)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		c_custkey,
+		c_name,
+		sum(l_extendedprice * (1 - l_discount)) as revenue,
+		c_acctbal,
+		n_name,
+		c_address,
+		c_phone,
+		c_comment
+	from
+		customer,
+		orders,
+		lineitem,
+		nation
+	where
+		c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and o_orderdate >= date '1993-10-01'
+		and o_orderdate < date '1993-10-01' + interval '3' month
+		and l_returnflag = 'R'
+		and c_nationkey = n_nationkey
+	group by
+		c_custkey,
+		c_name,
+		c_acctbal,
+		c_phone,
+		n_name,
+		c_address,
+		c_comment
+	order by
+		revenue desc
+	limit 20;
+	
+2021-03-02 12:17:59.610 UTC [465774] LOG:  Bao planning selected arm 0, in 32.475000 CPU ms.
+2021-03-02 12:17:59.610 UTC [465774] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Returned Item Reporting Query (Q10)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		c_custkey,
+		c_name,
+		sum(l_extendedprice * (1 - l_discount)) as revenue,
+		c_acctbal,
+		n_name,
+		c_address,
+		c_phone,
+		c_comment
+	from
+		customer,
+		orders,
+		lineitem,
+		nation
+	where
+		c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and o_orderdate >= date '1993-10-01'
+		and o_orderdate < date '1993-10-01' + interval '3' month
+		and l_returnflag = 'R'
+		and c_nationkey = n_nationkey
+	group by
+		c_custkey,
+		c_name,
+		c_acctbal,
+		c_phone,
+		n_name,
+		c_address,
+		c_comment
+	order by
+		revenue desc
+	limit 20;
+	
+2021-03-02 12:18:00.501 UTC [465774] LOG:  duration: 924.820 ms
+2021-03-02 12:18:00.506 UTC [465778] LOG:  duration: 0.094 ms
+2021-03-02 12:18:00.506 UTC [465778] LOG:  duration: 0.071 ms
+2021-03-02 12:18:00.506 UTC [465778] LOG:  duration: 0.027 ms
+2021-03-02 12:18:00.507 UTC [465778] LOG:  duration: 0.039 ms
+2021-03-02 12:18:00.507 UTC [465778] LOG:  duration: 0.050 ms
+2021-03-02 12:18:00.507 UTC [465778] LOG:  duration: 0.042 ms
+2021-03-02 12:18:00.507 UTC [465778] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Promotion Effect Query (Q14)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		100.00 * sum(case
+			when p_type like 'PROMO%'
+				then l_extendedprice * (1 - l_discount)
+			else 0
+		end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+	from
+		lineitem,
+		part
+	where
+		l_partkey = p_partkey
+		and l_shipdate >= date '1993-12-01'
+		and l_shipdate < date '1993-12-01' + interval '1' month
+	;
+	
+2021-03-02 12:18:00.537 UTC [465778] LOG:  Bao planning selected arm 0, in 28.535000 CPU ms.
+2021-03-02 12:18:00.537 UTC [465778] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Promotion Effect Query (Q14)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		100.00 * sum(case
+			when p_type like 'PROMO%'
+				then l_extendedprice * (1 - l_discount)
+			else 0
+		end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+	from
+		lineitem,
+		part
+	where
+		l_partkey = p_partkey
+		and l_shipdate >= date '1993-12-01'
+		and l_shipdate < date '1993-12-01' + interval '1' month
+	;
+	
+2021-03-02 12:18:01.085 UTC [465778] LOG:  duration: 577.729 ms
+2021-03-02 12:18:01.090 UTC [465781] LOG:  duration: 0.089 ms
+2021-03-02 12:18:01.090 UTC [465781] LOG:  duration: 0.064 ms
+2021-03-02 12:18:01.090 UTC [465781] LOG:  duration: 0.030 ms
+2021-03-02 12:18:01.090 UTC [465781] LOG:  duration: 0.027 ms
+2021-03-02 12:18:01.090 UTC [465781] LOG:  duration: 0.053 ms
+2021-03-02 12:18:01.090 UTC [465781] LOG:  duration: 0.038 ms
+2021-03-02 12:18:01.091 UTC [465781] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Minimum Cost Supplier Query (Q2)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_acctbal,
+		s_name,
+		n_name,
+		p_partkey,
+		p_mfgr,
+		s_address,
+		s_phone,
+		s_comment
+	from
+		part,
+		supplier,
+		partsupp,
+		nation,
+		region
+	where
+		p_partkey = ps_partkey
+		and s_suppkey = ps_suppkey
+		and p_size = 45
+		and p_type like '%STEEL'
+		and s_nationkey = n_nationkey
+		and n_regionkey = r_regionkey
+		and r_name = 'MIDDLE EAST'
+		and ps_supplycost = (
+			select
+				min(ps_supplycost)
+			from
+				partsupp,
+				supplier,
+				nation,
+				region
+			where
+				p_partkey = ps_partkey
+				and s_suppkey = ps_suppkey
+				and s_nationkey = n_nationkey
+				and n_regionkey = r_regionkey
+				and r_name = 'MIDDLE EAST'
+		)
+	order by
+		s_acctbal desc,
+		n_name,
+		s_name,
+		p_partkey
+	limit 100;
+	
+2021-03-02 12:19:30.840 UTC [465781] LOG:  duration: 89749.408 ms
+2021-03-02 12:19:30.845 UTC [465793] LOG:  duration: 0.110 ms
+2021-03-02 12:19:30.846 UTC [465793] LOG:  duration: 0.073 ms
+2021-03-02 12:19:30.846 UTC [465793] LOG:  duration: 0.032 ms
+2021-03-02 12:19:30.846 UTC [465793] LOG:  duration: 0.041 ms
+2021-03-02 12:19:30.846 UTC [465793] LOG:  duration: 0.086 ms
+2021-03-02 12:19:30.846 UTC [465793] LOG:  duration: 0.044 ms
+2021-03-02 12:19:30.847 UTC [465793] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Potential Part Promotion Query (Q20)
+	-- Function Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_name,
+		s_address
+	from
+		supplier,
+		nation
+	where
+		s_suppkey in (
+			select
+				ps_suppkey
+			from
+				partsupp
+			where
+				ps_partkey in (
+					select
+						p_partkey
+					from
+						part
+					where
+						p_name like 'brown%'
+				)
+				and ps_availqty > (
+					select
+						0.5 * sum(l_quantity)
+					from
+						lineitem
+					where
+						l_partkey = ps_partkey
+						and l_suppkey = ps_suppkey
+						and l_shipdate >= date '1995-01-01'
+						and l_shipdate < date '1995-01-01' + interval '1' year
+				)
+		)
+		and s_nationkey = n_nationkey
+		and n_name = 'ETHIOPIA'
+	order by
+		s_name
+	;
+	
+2021-03-02 12:24:30.847 UTC [465793] ERROR:  canceling statement due to statement timeout
+2021-03-02 12:24:30.847 UTC [465793] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Potential Part Promotion Query (Q20)
+	-- Function Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		s_name,
+		s_address
+	from
+		supplier,
+		nation
+	where
+		s_suppkey in (
+			select
+				ps_suppkey
+			from
+				partsupp
+			where
+				ps_partkey in (
+					select
+						p_partkey
+					from
+						part
+					where
+						p_name like 'brown%'
+				)
+				and ps_availqty > (
+					select
+						0.5 * sum(l_quantity)
+					from
+						lineitem
+					where
+						l_partkey = ps_partkey
+						and l_suppkey = ps_suppkey
+						and l_shipdate >= date '1995-01-01'
+						and l_shipdate < date '1995-01-01' + interval '1' year
+				)
+		)
+		and s_nationkey = n_nationkey
+		and n_name = 'ETHIOPIA'
+	order by
+		s_name
+	;
+	
+2021-03-02 12:24:31.852 UTC [465825] LOG:  duration: 0.086 ms
+2021-03-02 12:24:31.852 UTC [465825] LOG:  duration: 0.059 ms
+2021-03-02 12:24:31.852 UTC [465825] LOG:  duration: 0.028 ms
+2021-03-02 12:24:31.852 UTC [465825] LOG:  duration: 0.027 ms
+2021-03-02 12:24:31.852 UTC [465825] LOG:  duration: 0.050 ms
+2021-03-02 12:24:31.852 UTC [465825] LOG:  duration: 0.036 ms
+2021-03-02 12:24:31.853 UTC [465825] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Promotion Effect Query (Q14)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		100.00 * sum(case
+			when p_type like 'PROMO%'
+				then l_extendedprice * (1 - l_discount)
+			else 0
+		end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+	from
+		lineitem,
+		part
+	where
+		l_partkey = p_partkey
+		and l_shipdate >= date '1993-12-01'
+		and l_shipdate < date '1993-12-01' + interval '1' month
+	;
+	
+2021-03-02 12:24:32.463 UTC [465825] LOG:  duration: 610.091 ms
+2021-03-02 12:24:32.467 UTC [465828] LOG:  duration: 0.071 ms
+2021-03-02 12:24:32.467 UTC [465828] LOG:  duration: 0.053 ms
+2021-03-02 12:24:32.467 UTC [465828] LOG:  duration: 0.024 ms
+2021-03-02 12:24:32.467 UTC [465828] LOG:  duration: 0.024 ms
+2021-03-02 12:24:32.468 UTC [465828] LOG:  duration: 0.042 ms
+2021-03-02 12:24:32.468 UTC [465828] LOG:  duration: 0.031 ms
+2021-03-02 12:24:33.478 UTC [465831] LOG:  duration: 0.077 ms
+2021-03-02 12:24:33.478 UTC [465831] LOG:  duration: 0.050 ms
+2021-03-02 12:24:33.478 UTC [465831] LOG:  duration: 0.026 ms
+2021-03-02 12:24:33.478 UTC [465831] LOG:  duration: 0.023 ms
+2021-03-02 12:24:33.478 UTC [465831] LOG:  duration: 0.046 ms
+2021-03-02 12:24:33.478 UTC [465831] LOG:  duration: 0.035 ms
+2021-03-02 12:24:33.478 UTC [465831] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Local Supplier Volume Query (Q5)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		n_name,
+		sum(l_extendedprice * (1 - l_discount)) as revenue
+	from
+		customer,
+		orders,
+		lineitem,
+		supplier,
+		nation,
+		region
+	where
+		c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and l_suppkey = s_suppkey
+		and c_nationkey = s_nationkey
+		and s_nationkey = n_nationkey
+		and n_regionkey = r_regionkey
+		and r_name = 'EUROPE'
+		and o_orderdate >= date '1995-01-01'
+		and o_orderdate < date '1995-01-01' + interval '1' year
+	group by
+		n_name
+	order by
+		revenue desc
+	;
+	
+2021-03-02 12:24:34.212 UTC [465831] LOG:  duration: 733.914 ms
+2021-03-02 12:24:34.216 UTC [465834] LOG:  duration: 0.148 ms
+2021-03-02 12:24:34.216 UTC [465834] LOG:  duration: 0.057 ms
+2021-03-02 12:24:34.216 UTC [465834] LOG:  duration: 0.027 ms
+2021-03-02 12:24:34.217 UTC [465834] LOG:  duration: 0.025 ms
+2021-03-02 12:24:34.217 UTC [465834] LOG:  duration: 0.044 ms
+2021-03-02 12:24:34.217 UTC [465834] LOG:  duration: 0.033 ms
+2021-03-02 12:24:34.217 UTC [465834] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Returned Item Reporting Query (Q10)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		c_custkey,
+		c_name,
+		sum(l_extendedprice * (1 - l_discount)) as revenue,
+		c_acctbal,
+		n_name,
+		c_address,
+		c_phone,
+		c_comment
+	from
+		customer,
+		orders,
+		lineitem,
+		nation
+	where
+		c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and o_orderdate >= date '1993-10-01'
+		and o_orderdate < date '1993-10-01' + interval '3' month
+		and l_returnflag = 'R'
+		and c_nationkey = n_nationkey
+	group by
+		c_custkey,
+		c_name,
+		c_acctbal,
+		c_phone,
+		n_name,
+		c_address,
+		c_comment
+	order by
+		revenue desc
+	limit 20;
+	
+2021-03-02 12:24:35.066 UTC [465834] LOG:  duration: 849.051 ms
+2021-03-02 12:24:35.070 UTC [465837] LOG:  duration: 0.086 ms
+2021-03-02 12:24:35.070 UTC [465837] LOG:  duration: 0.050 ms
+2021-03-02 12:24:35.070 UTC [465837] LOG:  duration: 0.021 ms
+2021-03-02 12:24:35.070 UTC [465837] LOG:  duration: 0.019 ms
+2021-03-02 12:24:35.070 UTC [465837] LOG:  duration: 0.037 ms
+2021-03-02 12:24:35.070 UTC [465837] LOG:  duration: 0.027 ms
+2021-03-02 12:24:35.071 UTC [465837] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Local Supplier Volume Query (Q5)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		n_name,
+		sum(l_extendedprice * (1 - l_discount)) as revenue
+	from
+		customer,
+		orders,
+		lineitem,
+		supplier,
+		nation,
+		region
+	where
+		c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and l_suppkey = s_suppkey
+		and c_nationkey = s_nationkey
+		and s_nationkey = n_nationkey
+		and n_regionkey = r_regionkey
+		and r_name = 'EUROPE'
+		and o_orderdate >= date '1995-01-01'
+		and o_orderdate < date '1995-01-01' + interval '1' year
+	group by
+		n_name
+	order by
+		revenue desc
+	;
+	
+2021-03-02 12:24:35.752 UTC [465837] LOG:  duration: 681.875 ms
+2021-03-02 12:24:35.757 UTC [465840] LOG:  duration: 0.095 ms
+2021-03-02 12:24:35.757 UTC [465840] LOG:  duration: 0.064 ms
+2021-03-02 12:24:35.757 UTC [465840] LOG:  duration: 0.027 ms
+2021-03-02 12:24:35.757 UTC [465840] LOG:  duration: 0.026 ms
+2021-03-02 12:24:35.757 UTC [465840] LOG:  duration: 0.050 ms
+2021-03-02 12:24:35.757 UTC [465840] LOG:  duration: 0.037 ms
+2021-03-02 12:24:35.757 UTC [465840] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Shipping Priority Query (Q3)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		l_orderkey,
+		sum(l_extendedprice * (1 - l_discount)) as revenue,
+		o_orderdate,
+		o_shippriority
+	from
+		customer,
+		orders,
+		lineitem
+	where
+		c_mktsegment = 'HOUSEHOLD'
+		and c_custkey = o_custkey
+		and l_orderkey = o_orderkey
+		and o_orderdate < date '1995-03-29'
+		and l_shipdate > date '1995-03-29'
+	group by
+		l_orderkey,
+		o_orderdate,
+		o_shippriority
+	order by
+		revenue desc,
+		o_orderdate
+	limit 10;
+	
+2021-03-02 12:24:36.597 UTC [465840] LOG:  duration: 840.012 ms
+2021-03-02 12:24:36.601 UTC [465843] LOG:  duration: 0.076 ms
+2021-03-02 12:24:36.601 UTC [465843] LOG:  duration: 0.052 ms
+2021-03-02 12:24:36.601 UTC [465843] LOG:  duration: 0.020 ms
+2021-03-02 12:24:36.601 UTC [465843] LOG:  duration: 0.017 ms
+2021-03-02 12:24:36.602 UTC [465843] LOG:  duration: 0.040 ms
+2021-03-02 12:24:36.602 UTC [465843] LOG:  duration: 0.028 ms
+2021-03-02 12:24:36.602 UTC [465843] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Small-Quantity-Order Revenue Query (Q17)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		sum(l_extendedprice) / 7.0 as avg_yearly
+	from
+		lineitem,
+		part
+	where
+		p_partkey = l_partkey
+		and p_brand = 'Brand#45'
+		and p_container = 'WRAP PACK'
+		and l_quantity < (
+			select
+				0.2 * avg(l_quantity)
+			from
+				lineitem
+			where
+				l_partkey = p_partkey
+		)
+	;
+	
+2021-03-02 12:29:36.603 UTC [465843] ERROR:  canceling statement due to statement timeout
+2021-03-02 12:29:36.603 UTC [465843] STATEMENT:  -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Small-Quantity-Order Revenue Query (Q17)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		sum(l_extendedprice) / 7.0 as avg_yearly
+	from
+		lineitem,
+		part
+	where
+		p_partkey = l_partkey
+		and p_brand = 'Brand#45'
+		and p_container = 'WRAP PACK'
+		and l_quantity < (
+			select
+				0.2 * avg(l_quantity)
+			from
+				lineitem
+			where
+				l_partkey = p_partkey
+		)
+	;
+	
+2021-03-02 12:29:37.658 UTC [465874] LOG:  duration: 0.082 ms
+2021-03-02 12:29:37.658 UTC [465874] LOG:  duration: 0.057 ms
+2021-03-02 12:29:37.658 UTC [465874] LOG:  duration: 0.025 ms
+2021-03-02 12:29:37.658 UTC [465874] LOG:  duration: 0.023 ms
+2021-03-02 12:29:37.658 UTC [465874] LOG:  duration: 0.043 ms
+2021-03-02 12:29:37.658 UTC [465874] LOG:  duration: 0.033 ms
+2021-03-02 12:29:37.658 UTC [465874] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Customer Distribution Query (Q13)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		c_count,
+		count(*) as custdist
+	from
+		(
+			select
+				c_custkey,
+				count(o_orderkey)
+			from
+				customer left outer join orders on
+					c_custkey = o_custkey
+					and o_comment not like '%special%packages%'
+			group by
+				c_custkey
+		) as c_orders (c_custkey, c_count)
+	group by
+		c_count
+	order by
+		custdist desc,
+		c_count desc
+	;
+	
+2021-03-02 12:29:38.392 UTC [465874] LOG:  duration: 733.726 ms
+2021-03-02 12:29:38.396 UTC [465877] LOG:  duration: 0.080 ms
+2021-03-02 12:29:38.396 UTC [465877] LOG:  duration: 0.054 ms
+2021-03-02 12:29:38.396 UTC [465877] LOG:  duration: 0.024 ms
+2021-03-02 12:29:38.396 UTC [465877] LOG:  duration: 0.023 ms
+2021-03-02 12:29:38.397 UTC [465877] LOG:  duration: 0.041 ms
+2021-03-02 12:29:38.397 UTC [465877] LOG:  duration: 0.035 ms
+2021-03-02 12:29:38.397 UTC [465877] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Product Type Profit Measure Query (Q9)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		nation,
+		o_year,
+		sum(amount) as sum_profit
+	from
+		(
+			select
+				n_name as nation,
+				extract(year from o_orderdate) as o_year,
+				l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+			from
+				part,
+				supplier,
+				lineitem,
+				partsupp,
+				orders,
+				nation
+			where
+				s_suppkey = l_suppkey
+				and ps_suppkey = l_suppkey
+				and ps_partkey = l_partkey
+				and p_partkey = l_partkey
+				and o_orderkey = l_orderkey
+				and s_nationkey = n_nationkey
+				and p_name like '%grey%'
+		) as profit
+	group by
+		nation,
+		o_year
+	order by
+		nation,
+		o_year desc
+	;
+	
+2021-03-02 12:29:39.804 UTC [465877] LOG:  duration: 1406.760 ms
+2021-03-02 12:29:39.809 UTC [465882] LOG:  duration: 0.089 ms
+2021-03-02 12:29:39.809 UTC [465882] LOG:  duration: 0.054 ms
+2021-03-02 12:29:39.809 UTC [465882] LOG:  duration: 0.025 ms
+2021-03-02 12:29:39.809 UTC [465882] LOG:  duration: 0.023 ms
+2021-03-02 12:29:39.809 UTC [465882] LOG:  duration: 0.045 ms
+2021-03-02 12:29:39.809 UTC [465882] LOG:  duration: 0.035 ms
+2021-03-02 12:29:39.809 UTC [465882] LOG:  statement: -- TPC TPC-H Parameter Substitution (Version 2.17.3 build 0)
+	-- using 1610396972 as a seed to the RNG
+	-- $ID$
+	-- TPC-H/TPC-R Small-Quantity-Order Revenue Query (Q17)
+	-- Functional Query Definition
+	-- Approved February 1998
+	
+	
+	select
+		sum(l_extendedprice) / 7.0 as avg_yearly
+	from
+		lineitem,
+		part
+	where
+		p_partkey = l_partkey
+		and p_brand = 'Brand#45'
+		and p_container = 'WRAP PACK'
+		and l_quantity < (
+			select
+				0.2 * avg(l_quantity)
+			from
+				lineitem
+			where
+				l_partkey = p_partkey
+		)
+	;
