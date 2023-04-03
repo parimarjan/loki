@@ -6,9 +6,9 @@ import sys
 import copy
 import numpy as np
 import pandas as pd
+import pdb
 
 import loki
-
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run Loki.')
@@ -40,10 +40,33 @@ if __name__ == '__main__':
     tables = set(df['input'])
     table_columns = {table: set(df['column'].where(df['input'] == table).dropna()) for table in tables}
     c_df = pd.read_csv(loki.config[args.workload]['constraints_df'])
+    c_df = c_df[~c_df["Op"].str.contains("like")]
+    c_df = c_df[~c_df["Op"].str.contains("NOT")]
+    c_df = c_df[~c_df["Op"].str.contains("!=")]
+    c_df = c_df[~c_df["Op"].str.contains(">")]
+    c_df = c_df[~c_df["Op"].str.contains("<")]
+    print("Operators used: ", set(c_df["Op"]))
+    c_df = c_df.sample(frac=0.1)
+    print("Size of constraint df: ", len(c_df))
+
+    # c_df = c_df[c_df["Selectivity"] != 1.0]
+    # # pdb.set_trace()
+    # maxcard = max(c_df["RowCount"].values)
+    # c_df = c_df[c_df["RowCount"] < maxcard]
+    # print(len(c_df))
+
+    # print(table_columns)
+    # pdb.set_trace()
 
     table = args.table
+
+    orig_table = table
+    # table = '"{}"'.format(table)
+
     columns = table_columns[table]
+
     constraints_df = constraints.get_constraints_df(c_df, table)
+
     table_cardinality = constraints.get_table_cardinality(constraints_df)
     co_optimized_columns = constraints.get_co_optimized_columns(constraints_df, columns)
     programs = constraints.get_programs(co_optimized_columns)
@@ -53,6 +76,13 @@ if __name__ == '__main__':
     vars_per_col = args.vars_per_col
 
     solutions = []
+
+    # print(constraints_df.head(5))
+    print("removing Nones")
+    constraints_df = constraints_df[constraints_df["Value0"] != "None"]
+    constraints_df = constraints_df[constraints_df["Value1"] != "None"]
+    constraints_df = constraints_df[constraints_df["Value"] != "None"]
+    # pdb.set_trace()
     for program in programs:
         logger.info(f'Solving: {program}')
         constraints_ = constraints.parse_constraints(program, constraints_df)
@@ -69,7 +99,7 @@ if __name__ == '__main__':
     solution_df = postprocessing.solution_to_df(full_solution)
     final_solution_df = postprocessing.scale_solution_df(solution_df, table_cardinality, vars_per_col)
 
-    final_solution_df.to_csv(f'results/{table}.csv')
+    final_solution_df.to_csv(f'results/{orig_table}.csv')
 
     logger.info('Exiting Loki!')
 

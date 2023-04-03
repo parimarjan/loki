@@ -1,7 +1,58 @@
 import copy
 import numpy as np
 import pandas as pd
+from sqlalchemy import create_engine
+import time
+import psycopg2 as pg
 
+ENGINE_CMD_FMT = """postgresql://{USER}:{PWD}@{HOST}:{PORT}/{DB}"""
+
+USER="ceb"
+DBHOST="localhost"
+PORT=5432
+PWD="password"
+DROP_TEMPLATE = "DROP TABLE IF EXISTS {TABLE_NAME}"
+NEW_NAME_FMT = "{INP}_{DATA_KIND}"
+
+def upload_to_postgres(df, dbname, table, data_kind,
+        shuffle=True, null_strs=False):
+    start = time.time()
+
+    # shuffle the table to upload
+    if shuffle:
+        df = df.sample(frac=1.0)
+
+    if null_strs:
+        for k in df.keys():
+            df[k] = df[k].apply(lambda x: x if pd.notnull(x) else
+                    ''.join(random.choice(string.ascii_uppercase
+                        + string.digits) for _ in range(random.randint(1,50))))
+
+        print("done updating NULL values w/ random strings")
+
+    new_table_name = NEW_NAME_FMT.format(INP=table,
+            DATA_KIND=data_kind)
+    ## drop table if needed
+    drop_sql = DROP_TEMPLATE.format(TABLE_NAME = new_table_name)
+    con = pg.connect(user=USER, host=DBHOST, port=PORT,
+            password=PWD, database=dbname)
+    cursor = con.cursor()
+    cursor.execute(drop_sql)
+
+    con.commit()
+    cursor.close()
+    con.close()
+
+    engine_cmd = ENGINE_CMD_FMT.format(USER = USER,
+                                       PWD = PWD,
+                                       HOST = DBHOST,
+                                       PORT = PORT,
+                                       DB = dbname)
+
+    engine = create_engine(engine_cmd)
+    df.to_sql(new_table_name, engine)
+
+    print("uploading to postgres took: ", round(time.time()-start, 2))
 
 def apply_leftover_constraints(full_solution, leftover_constraints):
     for lc in leftover_constraints:
