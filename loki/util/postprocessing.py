@@ -4,6 +4,8 @@ import pandas as pd
 from sqlalchemy import create_engine
 import time
 import psycopg2 as pg
+import random
+import string
 
 ENGINE_CMD_FMT = """postgresql://{USER}:{PWD}@{HOST}:{PORT}/{DB}"""
 

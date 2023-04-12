@@ -4,10 +4,8 @@ import pandas as pd
 
 from ortools.sat.python import cp_model
 import collections
-import random
 
 from loki.util import printer
-import pdb
 
 
 def build_model(program, constraints, leftover_constraints, table_cardinality, vars_per_col=1000):
@@ -23,18 +21,12 @@ def build_model(program, constraints, leftover_constraints, table_cardinality, v
     # Create row variables
     scale = 0
     for i, col in enumerate(cols):
-        si = 0
         for var in range(i * vars_per_col, (i + 1) * vars_per_col):
             vars[var].append(model.NewBoolVar('%s_%i_%s' % (col, var, 'NULL')))
             for value in col_values[col]:
                 vars[var].append(model.NewBoolVar('%s_%i_%s' % (col, var, value)))
                 scale += 1
-                if si % 25000 == 0:
-                    print("Variable {}: {}".format(scale,
-                                    vars[var][-1]))
-                si += 1
-
-    print(f'Number of SAT variables: {scale}')
+    print(f'Problem scale: {scale}')
 
     # Enforce exactly one value per variable
     for var in range(len(vars)):
@@ -60,21 +52,7 @@ def build_model(program, constraints, leftover_constraints, table_cardinality, v
             pass  # Move forward with constraint encoding
         if len(k) == 1:  # No correlation
             k = k[0]
-            # model.Add(sum(vars[cols.index(k[0]) * vars_per_col + var][col_values_map[k[0]][k[2]]] for var in range(vars_per_col)) == downsampled_v)
-
-            curvars = []
-            allconsts = list(col_values_map[k[0]].values())
-            for var in range(vars_per_col):
-                const1 = col_values_map[k[0]][k[2]]
-                curvars.append(vars[cols.index(k[0]) * vars_per_col + \
-                    var][const1])
-                # for ci in range(20):
-                    # const2 = random.choice(allconsts)
-                    # curvars.append(vars[cols.index(k[0]) * vars_per_col + \
-                        # var][const2])
-
-            model.Add(sum(curvars) == downsampled_v)
-
+            model.Add(sum(vars[cols.index(k[0]) * vars_per_col + var][col_values_map[k[0]][k[2]]] for var in range(vars_per_col)) == downsampled_v)
         else:  # Correlated columns: we must ensure that the values match on the same rows
             correlated_columns = [c[0] for c in k]
             correlated_values = [c[2] for c in k]

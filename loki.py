@@ -40,14 +40,14 @@ if __name__ == '__main__':
     tables = set(df['input'])
     table_columns = {table: set(df['column'].where(df['input'] == table).dropna()) for table in tables}
     c_df = pd.read_csv(loki.config[args.workload]['constraints_df'])
-    c_df = c_df[~c_df["Op"].str.contains("like")]
-    c_df = c_df[~c_df["Op"].str.contains("NOT")]
-    c_df = c_df[~c_df["Op"].str.contains("!=")]
+    # c_df = c_df[~c_df["Op"].str.contains("like")]
+    # c_df = c_df[~c_df["Op"].str.contains("NOT")]
+    # c_df = c_df[~c_df["Op"].str.contains("!=")]
     c_df = c_df[~c_df["Op"].str.contains(">")]
     c_df = c_df[~c_df["Op"].str.contains("<")]
     print("Operators used: ", set(c_df["Op"]))
-    c_df = c_df.sample(frac=0.1)
-    print("Size of constraint df: ", len(c_df))
+    #c_df = c_df.sample(frac=0.1)
+    #print("Size of constraint df: ", len(c_df))
 
     # c_df = c_df[c_df["Selectivity"] != 1.0]
     # # pdb.set_trace()
